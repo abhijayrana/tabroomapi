@@ -6,11 +6,18 @@ from turtle import right
 import requests
 from bs4 import BeautifulSoup
 from pprint import pprint
+from readdata import fib, getournament
+
+
+varr='hello'
+fib(varr)
+getournament()
 
 #SUPERDEBATE 1
 
 sd1=[]
 
+#scrapes data from tournament homepage, specifically it scrapes the results tab url
 result=requests.get("https://www.tabroom.com/index/tourn/index.mhtml?tourn_id=20646")
 src=result.content
 soup=BeautifulSoup(src, 'html.parser')
@@ -23,6 +30,7 @@ for link in links:
         if "tourn_id" in resultslink:
             resultfinal=resultslink
 
+#scrapes results page, navigating to the 'Final Places' tab
 result=requests.get(f"https://www.tabroom.com/"+resultfinal)
 src=result.content
 soup=BeautifulSoup(src, 'html.parser')
@@ -34,6 +42,7 @@ for link in links:
         finalresultslink=link.attrs['href']
         print(finalresultslink)
 
+#scrapes initial final places tab and finds tournament id, round id, and number of rounds.
 finalresult=requests.get(f"https://www.tabroom.com"+finalresultslink)
 src=result.content
 soup=BeautifulSoup(src, 'html.parser')
@@ -52,20 +61,22 @@ for value in values:
 tableids0.pop()
 print(tableids0)
 
-#tableids1=[189552, 189553, 189554, 189555, 189556, 189557, 189558, 189559]
+#tableids0 is the list of all table ids
 
+#extracts tournamentid from tournament id link (VERY SKETCHY CODE)
 tournamentid=finalresultslink[-22:]
 tournamentid=tournamentid[0:5]
 print(tournamentid)
 
+#get data for all competitors in specified tournament (specified by tourn id)
+#currently filtering only bellarmine students and currently only displaying win number, names, school
+
 for tablenumber in tableids0:
     table_id = tablenumber
 
+    #uses tournament id and event id to scrape individual pages from a tournament
     params = {"tourn_id": tournamentid, "result_id": table_id}
     result = requests.get(f"https://www.tabroom.com/index/tourn/results/event_results.mhtml", params=params)
-    # print(result.status_code)
-    #print(result.headers)
-
     src = result.content
     #print(src)
     # with open("tabroom.html", "r") as f:
@@ -113,7 +124,7 @@ print('------------SUPERDEBATE 1-------------')
 def getkey(item):
     return item[3]
 sd1.sort(key=getkey)
-pprint(sd1)
+#pprint(sd1)
 
 # #SUPERDEBATE 2
 
