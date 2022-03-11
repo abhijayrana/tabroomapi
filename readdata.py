@@ -11,12 +11,12 @@ def getournament():
     soup=BeautifulSoup(src, 'html.parser')
     table=soup.find('table')
     tablelinks=table.find_all("a")
-    print(soup.prettify())
+    #print(soup.prettify())
     for link in tablelinks:
         if "CFL" in link.text:
             tournamentappend=(link.text, link.attrs['href'])
             alltournaments.append(tournamentappend)
-    print(alltournaments)
+    return(alltournaments)
 
 
 def fib(n):

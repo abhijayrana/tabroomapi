@@ -11,181 +11,125 @@ from readdata import fib, getournament
 
 varr='hello'
 fib(varr)
-getournament()
+
+alltournamentslinks=getournament()
 
 #SUPERDEBATE 1
 
 sd1=[]
+for tournament in alltournamentslinks:
+    
+    (text, linkgg)=tournament
 
-#scrapes data from tournament homepage, specifically it scrapes the results tab url
-result=requests.get("https://www.tabroom.com/index/tourn/index.mhtml?tourn_id=20646")
-src=result.content
-soup=BeautifulSoup(src, 'html.parser')
-resultslink=""
-resultfinal=""
-links=soup.find_all("a")
-for link in links:
-    if "Results" in link.text: 
-        resultslink=link.attrs['href']
-        if "tourn_id" in resultslink:
-            resultfinal=resultslink
+    if "Super Debate" in text:
 
-#scrapes results page, navigating to the 'Final Places' tab
-result=requests.get(f"https://www.tabroom.com/"+resultfinal)
-src=result.content
-soup=BeautifulSoup(src, 'html.parser')
-#print(soup.prettify())
-links=soup.find_all("a")
-finalresultslink=""
-for link in links:
-    if "Final Places" in link.text:
-        finalresultslink=link.attrs['href']
-        print(finalresultslink)
+        linkggg=linkgg
 
-#scrapes initial final places tab and finds tournament id, round id, and number of rounds.
-finalresult=requests.get(f"https://www.tabroom.com"+finalresultslink)
-src=result.content
-soup=BeautifulSoup(src, 'html.parser')
+        #scrapes data from tournament homepage, specifically it scrapes the results tab url
+        result=requests.get(f"https://www.tabroom.com"+linkgg)
+        src=result.content
+        soup=BeautifulSoup(src, 'html.parser')
+        resultslink=""
+        resultfinal=""
+        links=soup.find_all("a")
+        for link in links:
+            if "Results" in link.text: 
+                resultslink=link.attrs['href']
+                if "tourn_id" in resultslink:
+                    resultfinal=resultslink
 
-items=soup.select('option[value]')
-values=[item.get('value') for item in items]
-eventlength=len(values)
-roundidnew=finalresultslink[-6:]
-print(roundidnew)
-roundidnew=int(roundidnew)
-tableids0=[roundidnew]
-roundidnew=int(roundidnew)
-for value in values:
-    roundidnew=roundidnew+1
-    tableids0.append(roundidnew)
-tableids0.pop()
-print(tableids0)
+        #scrapes results page, navigating to the 'Final Places' tab
+        result=requests.get(f"https://www.tabroom.com/"+resultfinal)
+        src=result.content
+        soup=BeautifulSoup(src, 'html.parser')
+        #print(soup.prettify())
+        links=soup.find_all("a")
+        finalresultslink=""
+        for link in links:
+            if "Final Places" in link.text:
+                finalresultslink=link.attrs['href']
+                #print(finalresultslink)
 
-#tableids0 is the list of all table ids
+        #scrapes initial final places tab and finds tournament id, round id, and number of rounds.
+        finalresult=requests.get(f"https://www.tabroom.com"+finalresultslink)
+        src=result.content
+        soup=BeautifulSoup(src, 'html.parser')
 
-#extracts tournamentid from tournament id link (VERY SKETCHY CODE)
-tournamentid=finalresultslink[-22:]
-tournamentid=tournamentid[0:5]
-print(tournamentid)
+        items=soup.select('option[value]')
+        values=[item.get('value') for item in items]
+        eventlength=len(values)
+        roundidnew=finalresultslink[-6:]
+        #print(roundidnew)
+        roundidnew=int(roundidnew)
+        tableids0=[roundidnew]
+        roundidnew=int(roundidnew)
+        for value in values:
+            roundidnew=roundidnew+1
+            tableids0.append(roundidnew)
+        tableids0.pop()
+        #print(tableids0)
 
-#get data for all competitors in specified tournament (specified by tourn id)
-#currently filtering only bellarmine students and currently only displaying win number, names, school
+        #tableids0 is the list of all table ids
 
-for tablenumber in tableids0:
-    table_id = tablenumber
+        #extracts tournamentid from tournament id link (VERY SKETCHY CODE)
+        tournamentid=finalresultslink[-22:]
+        tournamentid=tournamentid[0:5]
+        #print(tournamentid)
 
-    #uses tournament id and event id to scrape individual pages from a tournament
-    params = {"tourn_id": tournamentid, "result_id": table_id}
-    result = requests.get(f"https://www.tabroom.com/index/tourn/results/event_results.mhtml", params=params)
-    src = result.content
-    #print(src)
-    # with open("tabroom.html", "r") as f:
-    #     src = f.read()
+        #get data for all competitors in specified tournament (specified by tourn id)
+        #currently filtering only bellarmine students and currently only displaying win number, names, school
 
-    soup = BeautifulSoup(src, 'html.parser')
-    #print(soup.prettify())
+        for tablenumber in tableids0:
+            table_id = tablenumber
+
+            #uses tournament id and event id to scrape individual pages from a tournament
+            params = {"tourn_id": tournamentid, "result_id": table_id}
+            result = requests.get(f"https://www.tabroom.com/index/tourn/results/event_results.mhtml", params=params)
+            src = result.content
+            #print(src)
+            # with open("tabroom.html", "r") as f:
+            #     src = f.read()
+
+            soup = BeautifulSoup(src, 'html.parser')
+            #print(soup.prettify())
 
 
-    links=soup.find_all("select")
-    #print(links)
-    #print("\n")
+            links=soup.find_all("select")
+            #print(links)
+            #print("\n")
 
-    items=soup.select('option[value]')
-    values=[item.get('value') for item in items]
-    #print(values)
-    #print(items)
+            items=soup.select('option[value]')
+            values=[item.get('value') for item in items]
+            #print(values)
+            #print(items)
 
-    try:
-        table = soup.find("table", id=f"{table_id}-1")
-        rows = table.select("tr")
+            try:
+                table = soup.find("table", id=f"{table_id}-1")
+                rows = table.select("tr")
 
-        bellstats=[]
+                bellstats=[]
 
-        for row in rows[1:]:
-            _, place, _, entry, _, school, _, winpm, *rest = row.children
-            place = place.string.strip()
-            entry = entry.string.strip()
-            school = school.string.strip()
-            winpm = winpm.string.strip()
-            if school=="Bellarmine College Prep":
-                entry=entry.replace('BelCol','')
-            # print(f"{place} | {entry} | {school} | {winpm}")
-                tempstorage=(place, entry, school, winpm)
-                bellstats.append(tempstorage)
+                for row in rows[1:]:
+                    _, place, _, entry, _, school, _, winpm, *rest = row.children
+                    place = place.string.strip()
+                    entry = entry.string.strip()
+                    school = school.string.strip()
+                    winpm = winpm.string.strip()
+                    if school=="Bellarmine College Prep":
+                        entry=entry.replace('BelCol','')
+                        entry=entry.replace('AP ','')
+                    # print(f"{place} | {entry} | {school} | {winpm}")
+                        tempstorage=(place, entry, school, winpm)
+                        bellstats.append(tempstorage)
 
-        #print(bellstats)
-        for stat in bellstats:
-            sd1.append(stat)
-    except AttributeError:
-        pass
-
+                #print(bellstats)
+                for stat in bellstats:
+                    sd1.append(stat)
+            except AttributeError:
+                pass
+        print(linkggg)
 print('------------SUPERDEBATE 1-------------')
-#print(sd1)
 def getkey(item):
     return item[3]
 sd1.sort(key=getkey)
-#pprint(sd1)
-
-# #SUPERDEBATE 2
-
-# sd2=[]
-# tableids=[198126, 198127, 198128, 198129, 198130, 198131, 198132]
-
-# for tablenumber in tableids:
-#     table_id = tablenumber
-
-#     params = {"tourn_id": 20650, "result_id": table_id}
-#     result = requests.get(f"https://www.tabroom.com/index/tourn/results/event_results.mhtml", params=params)
-#     # print(result.status_code)
-#     #print(result.headers)
-
-#     src = result.content
-#     #print(src)
-#     # with open("tabroom.html", "r") as f:
-#     #     src = f.read()
-
-#     soup = BeautifulSoup(src, 'html.parser')
-#     #print(soup.prettify())
-
-
-#     links=soup.find_all("select")
-#     #print(links)
-#     #print("\n")
-
-#     items=soup.select('option[value]')
-#     values=[item.get('value') for item in items]
-#     #print(values)
-#     #print(items)
-
-#     try:
-#         table = soup.find("table", id=f"{table_id}-1")
-#         rows = table.select("tr")
-
-#         bellstats=[]
-
-#         for row in rows[1:]:
-#             _, place, _, entry, _, school, _, winpm, *rest = row.children
-#             place = place.string.strip()
-#             entry = entry.string.strip()
-#             school = school.string.strip()
-#             winpm = winpm.string.strip()
-#             if school=="Bellarmine College Prep":
-#                 entry=entry.replace('BelCol ','')
-#                 entry=entry.replace('AP ', '')
-
-
-#             # print(f"{place} | {entry} | {school} | {winpm}")
-#                 tempstorage=(place, entry, school, winpm)
-#                 bellstats.append(tempstorage)
-
-#         #print(bellstats)
-#         for stat in bellstats:
-#             sd2.append(stat)
-#     except AttributeError:
-#         pass
-
-# print('------------SUPERDEBATE 2-------------')
-# def getkey(item):
-#     return item[3]
-# sd2.sort(key=getkey)
-# #pprint(sd2)
+pprint(sd1)
