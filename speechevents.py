@@ -13,15 +13,37 @@ try:
     speechbreakstats=[]
 
     for row in rows[1:]:
-        _, place, _, entry, _, school, *rest = row.children
+        _, place, _, entry, _, school, _, score, *rest = row.children
         place = place.string.strip()
         entry = entry.string.strip()
         school = school.string.strip()
+        score= score.string.strip()
 
         if school=="Bellarmine College Prep":
-            tempstorage=(place, entry, school)
+            tempstorage=(place, entry, school, score)
             speechbreakstats.append(tempstorage)
 except AttributeError:
     pass
 
-print(speechbreakstats)
+pprint(speechbreakstats)
+
+try:
+    tableprelims = soup.find("table", id="191603-2")
+    rows = tableprelims.select("tr")
+
+    speechprelimsstats=[]
+
+    for row in rows[1:]:
+        _, place, _, entry, _, school, _, score, *rest = row.children
+        place = place.string.strip()
+        entry = entry.string.strip()
+        school = school.string.strip()
+        score= score.string.strip()
+
+        if school=="Bellarmine College Prep":
+            tempstorage=(place, entry, school, score)
+            speechprelimsstats.append(tempstorage)
+except AttributeError:
+    pass
+
+pprint(speechprelimsstats)
