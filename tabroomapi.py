@@ -94,15 +94,16 @@ for tournament in alltournamentslinks:
             #print(soup.prettify())
 
 
-            links=soup.find_all("select")
+            #links=soup.find_all("select")
             #print(links)
             #print("\n")
 
-            items=soup.select('option[value]')
-            values=[item.get('value') for item in items]
+            #items=soup.select('option[value]')
+            #values=[item.get('value') for item in items]
             #print(values)
             #print(items)
 
+            #scrapes names, schools, and results from table
             try:
                 table = soup.find("table", id=f"{table_id}-1")
                 rows = table.select("tr")
@@ -128,7 +129,13 @@ for tournament in alltournamentslinks:
             except AttributeError:
                 pass
         print(linkggg)
-print('------------SUPERDEBATE 1-------------')
+    
+    #if "Speech" in text:
+
+
+
+#results sorted by win number
+print('------------RESULTS-------------')
 def getkey(item):
     return item[3]
 sd1.sort(key=getkey)
