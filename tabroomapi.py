@@ -130,12 +130,13 @@ for tournament in alltournamentslinks:
                 pass
         print(linkggg)
     
-    #if "Speech" in text:
+#    if "Speech" in text and "State" not in text:
+
 
 
 
 #results sorted by win number
-print('------------RESULTS-------------')
+print('------------DEBATE RESULTS-------------')
 def getkey(item):
     return item[3]
 sd1.sort(key=getkey)

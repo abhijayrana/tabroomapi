@@ -2,6 +2,8 @@ from bs4 import BeautifulSoup
 import requests
 from pprint import pprint
 
+
+
 result=requests.get(f"https://www.tabroom.com/index/tourn/results/event_results.mhtml?tourn_id=20648&result_id=191603")
 src=result.content
 soup=BeautifulSoup(src, "html.parser")
