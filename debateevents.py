@@ -107,3 +107,4 @@ def getdebateresults(linkgg, sd1):
                     sd1.append(stat)
             except AttributeError:
                 pass
+            
