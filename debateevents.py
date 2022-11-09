@@ -31,7 +31,7 @@ def getdebateresults(linkgg, sd1):
 
         #scrapes initial final places tab and finds tournament id, round id, and number of rounds.
         finalresult=requests.get(f"https://www.tabroom.com"+finalresultslink)
-        src=result.content
+        src=finalresult.content
         soup=BeautifulSoup(src, 'html.parser')
 
         items=soup.select('option[value]')
