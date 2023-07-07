@@ -99,12 +99,4 @@ def debateresults(url):
             pass
 
 
-
-
-
-    
-
-
-
-
-debateresults("https://www.tabroom.com/index/tourn/index.mhtml?tourn_id=24551")
+debateresults("https://www.tabroom.com/index/tourn/index.mhtml?tourn_id=24551") 

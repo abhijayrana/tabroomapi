@@ -9,33 +9,36 @@ from pprint import pprint
 from readdata import fib, getournament
 from debateevents import getdebateresults
 
+from dbtcapsule import debateresults
 
 varr='hello'
 fib(varr)
 
-alltournamentslinks=getournament()
+# alltournamentslinks=getournament()
 
-#SUPERDEBATE 1
+# #SUPERDEBATE 1
 
-sd1=[]
-for tournament in alltournamentslinks:
+# sd1=[]
+# for tournament in alltournamentslinks:
     
-    (text, linkgg)=tournament
+#     (text, linkgg)=tournament
 
-    #non quals debate events
-    if "Super Debate" in text:
-        linkggg=linkgg
-        getdebateresults(linkgg, sd1)
-        print(linkggg)
+#     #non quals debate events
+#     if "Super Debate" in text:
+#         linkggg=linkgg
+#         getdebateresults(linkgg, sd1)
+#         print(linkggg)
     
-    #if "Speech" in text and "State" not in text:
+#     #if "Speech" in text and "State" not in text:
 
 
 
 
-#debate esults sorted by win number
-print('------------DEBATE RESULTS-------------')
-def getkey(item):
-    return item[3]
-sd1.sort(key=getkey)
-pprint(sd1)
+# #debate esults sorted by win number
+# print('------------DEBATE RESULTS-------------')
+# def getkey(item):
+#     return item[3]
+# sd1.sort(key=getkey)
+# pprint(sd1)
+
+
